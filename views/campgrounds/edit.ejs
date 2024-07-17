@@ -1,10 +1,17 @@
 <% layout('layouts/boilerplate') %>
 <h1 class="text-center">New Campground</h1>
 <div class="col-6 offset-3">
-	<form action="/campgrounds/<%=campground._id%>?_method=PUT" method="POST">
+	<form action="/campgrounds/<%=campground._id%>?_method=PUT" method="POST" novalidate class="validated-form">
 		<div class="mb-3">
 			<label class="form-label" for="title">Title</label>
-			<input class="form-control" type="text" id="title" name="campground[title]" value="<%=campground.title%>" />
+			<input
+				class="form-control"
+				type="text"
+				id="title"
+				name="campground[title]"
+				value="<%=campground.title%>"
+				required
+			/>
 		</div>
 		<div class="mb-3">
 			<label class="form-label" for="location">Location</label>
@@ -14,11 +21,19 @@
 				id="location"
 				name="campground[location]"
 				value="<%=campground.location%>"
+				required
 			/>
 		</div>
 		<div class="mb-3">
 			<label class="form-label" for="image">Image Url</label>
-			<input class="form-control" type="text" id="image" name="campground[image]" value="<%=campground.image%>" />
+			<input
+				class="form-control"
+				type="text"
+				id="image"
+				name="campground[image]"
+				value="<%=campground.image%>"
+				required
+			/>
 		</div>
 		<div class="mb-3">
 			<label class="form-label" for="price">Campground Price</label>
@@ -33,12 +48,13 @@
 					aria-describedby="price-label"
 					name="campground[price]"
 					value="<%=campground.price%>"
+					required
 				/>
 			</div>
 		</div>
 		<div class="mb-3">
 			<label class="form-label" for="description">Description</label>
-			<textarea class="form-control" type="text" id="description" name="campground[description]">
+			<textarea class="form-control" type="text" id="description" name="campground[description]" required>
 <%=campground.description%></textarea
 			>
 		</div>
