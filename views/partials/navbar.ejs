@@ -24,6 +24,20 @@
 					<a class="nav-link" aria-current="page" href="/campgrounds/new">New Campground</a>
 				</li>
 			</ul>
+			<ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+				<% if(!currentUser) {%>
+				<li class="nav-item">
+					<a href="/login" class="nav-link ml-auto">Login</a>
+				</li>
+				<li class="nav-item">
+					<a href="/register" class="nav-link ml-auto">Register</a>
+				</li>
+				<% } else { %>
+				<li class="nav-item">
+					<a href="/logout" class="nav-link ml-auto">Logout</a>
+				</li>
+				<% } %>
+			</ul>
 		</div>
 	</div>
 </nav>
