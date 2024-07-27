@@ -1,24 +1,24 @@
-const mongoose = require("mongoose");
-const cities = require("./cities");
-const { places, descriptors } = require("./seedHelpers");
-const Campground = require("../models/campground");
+const mongoose = require('mongoose');
+const cities = require('./cities');
+const {places, descriptors} = require('./seedHelpers');
+const Campground = require('../models/campground');
 // image: `https://picsum.photos/400?random=${Math.random()}`
 mongoose
-	.connect("mongodb://localhost:27017/yelp-camp")
+	.connect('mongodb://localhost:27017/yelp-camp')
 	.then(() => {
-		console.log("Mongo connection open");
+		console.log('Mongo connection open');
 	})
-	.catch((err) => {
+	.catch(err => {
 		console.log(err);
 	});
 
 const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => {
-	console.log("Database connected");
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+	console.log('Database connected');
 });
 
-const sample = (array) => {
+const sample = array => {
 	return array[Math.floor(Math.random() * array.length)];
 };
 
@@ -28,6 +28,7 @@ const seedDB = async () => {
 	for (let i = 0; i < 50; i++) {
 		const random1000 = Math.floor(Math.random() * 1000);
 		const camp = new Campground({
+			author: '66a0f841a57cb426441929a1', // (user, same)
 			location: `${cities[random1000].city}, ${cities[random1000].state}`,
 			title: `${sample(descriptors)} ${sample(places)}`,
 			image: `https://picsum.photos/400?random=${Math.random()}`,
