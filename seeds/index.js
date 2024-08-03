@@ -28,11 +28,16 @@ const seedDB = async () => {
 	for (let i = 0; i < 50; i++) {
 		const random1000 = Math.floor(Math.random() * 1000);
 		const camp = new Campground({
-			author: '66a0f841a57cb426441929a1', // (user, same)
+			// (user, <-same)
+			author: '66a0f841a57cb426441929a1', 
 			location: `${cities[random1000].city}, ${cities[random1000].state}`,
 			title: `${sample(descriptors)} ${sample(places)}`,
 			description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur tempora numquam quia accusamus odio molestiae, sed repellat qui quam natus distinctio explicabo! Nostrum eveniet animi est ullam sit quibusdam voluptatum?`,
 			price: price,
+			geometry: {
+				type: 'Point',
+				coordinates: [-133.1331, 470202]
+			},
 			images: [
 				{
 					url: `https://picsum.photos/400?random=${Math.random()}`,
