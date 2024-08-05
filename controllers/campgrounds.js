@@ -1,11 +1,10 @@
 const Campground = require('../models/campground');
-const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
-const mapBoxToken = process.env.MAPBOX_TOKEN;
-const geocoder = mbxGeocoding({accessToken: mapBoxToken});
+const maptilerClient = require("@maptiler/client");
+maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 const {cloudinary} = require('../cloudinary');
 
 module.exports.index = async (req, res, next) => {
-	const campgrounds = await Campground.find({}).populate('popupText');
+	const campgrounds = await Campground.find({}).populate({path: 'popupText', strictPopulate: false});
 	res.render('campgrounds/index', {campgrounds});
 };
 
@@ -14,12 +13,9 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createCampground = async (req, res, next) => {
-	const geoData = await geocoder.forwordGeocode({
-			query: req.body.campground.location,
-			limit: 1
-		}).send();
+	const geoData = await maptilerClient.geocoding.forward(req.body.campground.location, { limit: 1 });
 	const campground = new Campground(req.body.campground);
-	campground.geometry = geoData.ody.features[0].geometry;
+	campground.geometry = geoData.features[0].geometry;
 	campground.images = req.files.map(f => ({url: f.path, filename: f.filename}));
 	campground.author = req.user._id;
 	await campground.save();
@@ -34,7 +30,7 @@ module.exports.showCampground = async (req, res, next) => {
 		.populate('author');
 	if (!campground) {
 		req.flash('error', 'Cannot find that campground');
-		res.redirect('/campgrounds');
+		return res.redirect('/campgrounds');
 	}
 	// console.log(campground);
 	res.render('campgrounds/show', {campground});
@@ -57,6 +53,8 @@ module.exports.updateCampground = async (req, res, next) => {
 	const campground = await Campground.findByIdAndUpdate(id, {
 		...req.body.campground
 	});
+	const geoData = await maptilerClient.geocoding.forward(req.body.campground.location, { limit: 1 });
+	campground.geometry = geoData.features[0].geometry;
 	const imgs = req.files.map(f => ({url: f.path, filename: f.filename}));
 	campground.images.push(...imgs);
 	await campground.save();
