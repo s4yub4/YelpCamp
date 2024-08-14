@@ -12,4 +12,5 @@ npm install
 
 * [Heroku server](https://devcenter.heroku.com/)
 * [Cloudinary](https://cloudinary.com/)
-   
+* [MAPBOX](https://www.maptiler.com/)
+* [MongoDB](https://cloud.mongodb.com/)
